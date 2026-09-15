@@ -55,9 +55,28 @@ section+section{border-top:1px solid var(--border)}
 
 /* ---------- hero ---------- */
 .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
-.hero-bg{position:absolute;inset:0;background:url(assets/hero.webp) center/cover no-repeat;opacity:.5}
+/* A fixed-height band pinned to the top, NOT inset:0.
+   It used to cover the whole header - which is ~1286px tall because it contains the
+   phone - so `cover` scaled the 1600x880 image by 1.46x and put the moon 215px BELOW
+   the logo and 49px right of it. Pinned to a 560px strip at 1600:560, the image is
+   height-limited at every viewport up to 1600px wide, so the moon's position is fixed
+   instead of being a function of however tall the hero happens to be. `50% 0` keeps it
+   top-anchored; horizontal centring comes from the image itself, where the moon is
+   cropped to dead centre (see build_assets.hero) - `cover` crops symmetrically, so
+   whatever sits at the image's midpoint stays at the viewport's midpoint. */
+.hero-bg{position:absolute;left:0;right:0;top:0;height:560px;
+  background:url(assets/hero.webp) 50% 0/cover no-repeat;opacity:.55}
 .hero-bg::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(11,10,9,.5) 0%,rgba(11,10,9,.84) 58%,var(--bg) 100%)}
+  background:linear-gradient(180deg,rgba(11,10,9,.38) 0%,rgba(11,10,9,.80) 62%,var(--bg) 100%)}
+/* Past the band's own 1600px width, `cover` flips to scaling by WIDTH and the moon
+   starts sinking again (+32px at 1920, +79px at 2560). Pin the drawn height instead,
+   so the moon stays put, and fade the image's left/right edges into the page ground so
+   the narrower band has no visible seam. */
+@media (min-width:1601px){
+  .hero-bg{background-size:auto 560px;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%)}
+}
 .hero-inner{position:relative;padding-block:62px 0;text-align:center}
 .logo{margin:0 auto 32px;height:92px;width:auto}
 h1{font-size:clamp(35px,6.4vw,62px);line-height:1.08;letter-spacing:-.028em;font-weight:700;margin:0 0 20px}
