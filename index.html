@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>estelair — radio alarm clock &amp; sleep sounds for Android</title>
+<meta name="description" content="Set when you want to sleep and when you want to wake. estelair drifts you off with calm sound that is generated, never looped, and wakes you to any of 30,000+ radio stations. No ads, no tracking, no subscription.">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<meta property="og:title" content="estelair — radio alarm clock &amp; sleep sounds">
+<meta property="og:description" content="Your whole night, in two steps. Calm sound to fall asleep to, radio you love to wake up to.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0B0B0B">
+<style>
+/* Self-contained by design: no external fonts, scripts, analytics or trackers.
+   estelair's whole pitch is that it doesn't watch you - its website shouldn't either. */
+:root{
+  --bg:#0B0B0B; --surface:#141312; --surface-2:#1C1A18; --border:#282624;
+  --accent:#FF9D3D; --accent-soft:rgba(255,157,61,.13); --accent-line:rgba(255,157,61,.30);
+  --text:#F4F2F0; --muted:#B0AAA4; --hint:#7C7772;
+  --maxw:1120px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;
+}
+/* height:auto is NOT optional - the <img> tags carry width/height attributes for layout
+   stability, and without this the height attribute wins and every screenshot renders
+   squeezed to roughly twice its proper height. That shipped once. */
+img{max-width:100%;height:auto;display:block}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:22px}
+
+/* ---------- shared ---------- */
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:650;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.eyebrow .num{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;
+  background:var(--accent-soft);border:1px solid var(--accent-line);font-size:13px;letter-spacing:0}
+h2{font-size:clamp(28px,4.2vw,40px);line-height:1.15;letter-spacing:-.022em;font-weight:700;margin:0 0 16px}
+.sub{color:var(--muted);font-size:18px;margin:0 0 26px;max-width:54ch}
+section{padding-block:clamp(66px,9vw,108px)}
+section+section{border-top:1px solid var(--border)}
+
+/* phone frame */
+.phone{width:100%;max-width:330px;margin-inline:auto;padding:9px;background:#131211;
+  border:1px solid #343130;border-radius:34px;
+  box-shadow:0 30px 70px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.05)}
+.phone img{border-radius:26px;display:block;width:100%}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.hero-bg{position:absolute;inset:0;background:url(assets/hero.webp) center/cover no-repeat;opacity:.5}
+.hero-bg::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(11,10,9,.5) 0%,rgba(11,10,9,.84) 58%,var(--bg) 100%)}
+.hero-inner{position:relative;padding-block:62px 0;text-align:center}
+.logo{margin:0 auto 32px;height:92px;width:auto}
+h1{font-size:clamp(35px,6.4vw,62px);line-height:1.08;letter-spacing:-.028em;font-weight:700;margin:0 0 20px}
+h1 .soft{color:var(--accent)}
+.lede{max-width:610px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2.2vw,21px);line-height:1.55}
+.pills{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin:30px 0 0;padding:0;list-style:none}
+.pills li{font-size:13.5px;color:var(--muted);background:rgba(255,255,255,.045);
+  border:1px solid var(--border);border-radius:999px;padding:6px 14px;white-space:nowrap}
+.cta{margin:34px 0 0}
+/* Placeholder until the app is live. To swap in the real badge, download the official
+   "Get it on Google Play" asset from Google Play's brand guidelines and drop it in as an
+   <img> inside this link - never redraw or restyle Google's badge yourself. */
+.badge{display:inline-flex;align-items:center;gap:11px;background:var(--surface-2);color:var(--muted);
+  border:1px solid var(--border);font-weight:650;font-size:16px;padding:14px 26px;border-radius:12px}
+.badge:hover{text-decoration:none}
+.cta-note{margin:14px 0 0;font-size:13.5px;color:var(--hint)}
+.hero-phone{margin:52px auto -12px;max-width:310px}
+
+/* ---------- feature rows ---------- */
+.row{display:grid;grid-template-columns:1fr minmax(0,330px);gap:clamp(36px,6vw,80px);align-items:center}
+.row.flip .copy{order:2}
+.row.flip .art{order:1}
+ul.feat{list-style:none;margin:0;padding:0;display:grid;gap:14px;max-width:56ch}
+ul.feat li{position:relative;padding-left:28px;font-size:16.5px;line-height:1.55}
+ul.feat li::before{content:"";position:absolute;left:4px;top:.62em;width:7px;height:7px;
+  border-radius:50%;background:var(--accent);opacity:.85}
+ul.feat li b{font-weight:650}
+ul.feat li span{color:var(--muted)}
+
+/* ---------- Estelair Plus ---------- */
+.plus{background:
+  radial-gradient(90% 60% at 50% 0%,rgba(255,157,61,.07) 0%,rgba(255,157,61,0) 70%),var(--surface);
+  border-block:1px solid var(--border)}
+.plus-head{text-align:center;max-width:680px;margin:0 auto 46px}
+.plus-head .sub{margin-inline:auto;text-align:center}
+.plus-tag{display:inline-block;font-size:12.5px;font-weight:650;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);border:1px solid var(--accent-line);border-radius:999px;padding:5px 13px;margin-bottom:18px}
+.scenes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.scene{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--border);background:#000}
+.scene img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.scene .label{position:absolute;inset:auto 0 0 0;padding:44px 20px 18px;
+  background:linear-gradient(180deg,rgba(6,6,6,0) 0%,rgba(6,6,6,.88) 72%)}
+.scene h3{margin:0 0 3px;font-size:19px;font-weight:650;letter-spacing:-.01em}
+.scene p{margin:0;font-size:14.5px;line-height:1.5;color:#CFC8C1}
+.plus-more{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+.mini{background:var(--surface-2);border:1px solid var(--border);border-radius:18px;padding:24px 22px}
+.mini h3{margin:0 0 7px;font-size:17px;font-weight:650;letter-spacing:-.01em}
+.mini p{margin:0;color:var(--muted);font-size:15.5px;line-height:1.6}
+.mini .hz{display:inline-block;margin-top:10px;margin-right:6px;font-size:13px;color:var(--hint);
+  border:1px solid var(--border);border-radius:7px;padding:3px 9px}
+.freq{display:block;margin-top:4px;font-size:13.5px;color:var(--hint);line-height:1.45}
+.note{color:var(--hint);font-weight:400}
+
+/* comparison */
+.compare{margin-top:46px;border:1px solid var(--border);border-radius:18px;overflow:hidden;background:var(--bg)}
+.compare-scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:480px;font-size:16px}
+caption{text-align:left;padding:22px 24px 4px;font-weight:650;font-size:18px;letter-spacing:-.01em}
+th,td{text-align:left;padding:14px 20px;border-top:1px solid var(--border);vertical-align:top}
+thead th{border-top:none;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--hint);font-weight:650}
+thead th:nth-child(3){color:var(--accent)}
+tbody th{font-weight:500;color:var(--text);width:44%}
+td{color:var(--muted)}
+td.yes{color:var(--text)}
+.tick{color:var(--accent);font-weight:700}
+.dash{color:#4E4A47}
+.price{padding:24px;border-top:1px solid var(--border);background:var(--surface);
+  display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;justify-content:space-between}
+.price b{font-size:19px;font-weight:650;letter-spacing:-.01em}
+.price span{color:var(--muted);font-size:15.5px}
+
+/* ---------- privacy ---------- */
+.band h2,.band .sub{text-align:center}
+.band .sub{margin-inline:auto}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:26px 24px}
+.card h3{margin:0 0 9px;font-size:17px;font-weight:650;letter-spacing:-.01em}
+.card p{margin:0;color:var(--muted);font-size:15.5px;line-height:1.6}
+
+/* ---------- closing ---------- */
+.close{text-align:center}
+.close h2{margin-bottom:14px}
+.close .sub{margin-inline:auto;text-align:center;margin-bottom:30px}
+
+/* ---------- footer ---------- */
+footer{padding-block:52px 62px;border-top:1px solid var(--border);color:var(--hint);font-size:15px}
+.foot-top{display:flex;flex-wrap:wrap;gap:18px 30px;align-items:center;justify-content:space-between}
+.foot-links{display:flex;flex-wrap:wrap;gap:22px}
+.disclaimer{margin:30px 0 0;font-size:13.5px;line-height:1.6;max-width:74ch;font-style:italic}
+.copyright{margin:18px 0 0;font-size:13.5px}
+
+@media (max-width:900px){
+  .row{grid-template-columns:1fr;justify-items:center}
+  .row .copy{max-width:600px}
+  .row.flip .copy{order:1}
+  .row.flip .art{order:2}
+  .scenes,.plus-more,.grid3{grid-template-columns:1fr}
+  ul.feat{max-width:none}
+}
+@media (max-width:560px){
+  /* Let the comparison fit the screen instead of scrolling sideways. On a phone the
+     Plus column was off the right edge -- the one column that has to be read. */
+  table{min-width:0;font-size:14.5px}
+  caption{padding:18px 16px 2px;font-size:16.5px}
+  th,td{padding:11px 10px}
+  thead th{font-size:11.5px;letter-spacing:.05em}
+  tbody th{width:36%;font-size:14.5px}
+  .price{padding:18px 16px}
+}
+@media (max-width:420px){
+  .pills li{font-size:12.5px;padding:5px 11px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-inner wrap">
+    <img class="logo" src="assets/logo.png" alt="estelair" width="195" height="132">
+    <h1>Your whole night,<br><span class="soft">in two steps.</span></h1>
+    <p class="lede">
+      Tell estelair when you want to sleep and when you want to wake.
+      It drifts you off with calm sound, then wakes you to radio you actually like.
+    </p>
+    <ul class="pills">
+      <li>No ads</li><li>No tracking</li><li>No accounts</li>
+      <li>No subscription</li><li>Nothing to sign up for</li>
+    </ul>
+    <p class="cta">
+      <a class="badge" href="#plus">Coming soon to Google Play</a>
+    </p>
+    <p class="cta-note">Android 10 and later.</p>
+    <div class="phone hero-phone">
+      <img src="assets/shot-tonight.webp" alt="The Tonight screen, showing both a sleep time and a wake time set for the night." width="680" height="1473" loading="eager">
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="wrap">
+    <div class="row">
+      <div class="copy">
+        <p class="eyebrow"><span class="num">1</span> Go to sleep</p>
+        <h2>Calm sound that never repeats.</h2>
+        <p class="sub">
+          Every sound is generated as it plays, so there is no loop to notice and
+          nothing to download. Ocean, rain, wind, fire, and the classic noise colours.
+        </p>
+        <ul class="feat">
+          <li>It <b>fades in</b> as you settle, and <b>fades to silence</b> on its own — so it can't wake you later.</li>
+          <li>An optional <b>wordless breathing guide</b>, and a soft chime as it begins.</li>
+          <li>A <b>nightly reminder</b>, at a time you choose, when it's time to start.</li>
+          <li><b>Dim &amp; settle</b> quiets the screen down to just a still night scene.</li>
+          <li><b>Two sounds are free, forever</b> <span>— white noise and a full wind ambience.</span></li>
+        </ul>
+      </div>
+      <div class="art">
+        <div class="phone">
+          <img src="assets/shot-winddown.webp" alt="The wind-down screen: a moonlit sea behind the sound options and a Start now button." width="680" height="1473" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="row flip">
+      <div class="copy">
+        <p class="eyebrow"><span class="num">2</span> Wake up</p>
+        <h2>Radio, not a jarring beep.</h2>
+        <p class="sub">
+          Wake to your morning show, your music or your local news — any of
+          30,000+ stations. If a stream ever drops, your phone's own alarm tone takes over.
+        </p>
+        <ul class="feat">
+          <li>The volume <b>rises slowly</b>, so you surface naturally.</li>
+          <li>Snooze with a <b>volume-button press</b> or a tap — from the alarm screen or straight from the notification. Choose how many snoozes, and how long.</li>
+          <li>A heads-up <b>15 minutes before</b> lets you skip the alarm if you're already awake.</li>
+          <li>As many alarms as you like, for whichever days you like.</li>
+          <li><b>Built to actually fire:</b> <span>exact-time alarms that survive reboots and time changes, with plain guidance for phones that like to kill background apps.</span></li>
+        </ul>
+      </div>
+      <div class="art">
+        <div class="phone">
+          <img src="assets/shot-wakeup.webp" alt="The Wake up screen, listing alarms above a reliability check." width="680" height="1473" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="row">
+      <div class="copy">
+        <p class="eyebrow">The part nobody thinks about until it fails</p>
+        <h2>An alarm you can actually trust.</h2>
+        <p class="sub">
+          Phones quietly throttle apps in the background, and most alarm apps just hope
+          for the best. estelair checks the four settings that decide whether you wake up,
+          tells you which are off, and takes you straight to each one.
+        </p>
+        <ul class="feat">
+          <li><b>Background activity</b> <span>— so the alarm still fires while the phone is in deep sleep. The single most important one.</span></li>
+          <li><b>Alarms &amp; reminders</b> <span>— the exact-time permission. Without it, alarms can be dropped silently.</span></li>
+          <li><b>Notifications and the full-screen alarm</b> <span>— so it reaches you over the lock screen.</span></li>
+          <li><b>"Test my alarm now"</b> <span>— prove it works tonight, rather than finding out on the morning it matters.</span></li>
+        </ul>
+      </div>
+      <div class="art">
+        <div class="phone">
+          <img src="assets/shot-reliability.webp" alt="The reliability screen: Make sure your alarm rings, with background activity, alarms and reminders, notifications and full-screen alarm each checked off, above a Test my alarm now button." width="680" height="1473" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="row flip">
+      <div class="copy">
+        <p class="eyebrow">And a real radio</p>
+        <h2>Worth opening in the daytime.</h2>
+        <p class="sub">
+          The station browser isn't an afterthought bolted to an alarm — it's the
+          other half of the app.
+        </p>
+        <ul class="feat">
+          <li>Browse and search thousands of stations, see what's local, keep your favourites.</li>
+          <li>The song that's playing now, with full <b>lock-screen and headphone controls</b>.</li>
+          <li>A <b>sleep timer</b> plays a station for a while, then fades out and stops.</li>
+        </ul>
+      </div>
+      <div class="art">
+        <div class="phone">
+          <img src="assets/shot-radio.webp" alt="The Radio tab: a search field, genre and country chips, and a list of favourite stations." width="680" height="1473" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Estelair Plus ===================== -->
+  <section class="plus" id="plus">
+    <div class="wrap">
+      <div class="plus-head">
+        <span class="plus-tag">Estelair Plus</span>
+        <h2>The rest of the sound engine.</h2>
+        <p class="sub">
+          One payment, once — never a subscription. Plus opens five more sounds,
+          three more night scenes, and a tone you can set to your own pitch.
+        </p>
+      </div>
+
+      <div class="scenes">
+        <figure class="scene">
+          <img src="assets/plus-ocean.webp" alt="A full moon over open sea, its reflection running down the water." width="760" height="570" loading="lazy">
+          <figcaption class="label">
+            <h3>Ocean</h3>
+            <p>A slow sea, with the backwash drawing over shingle.</p>
+          </figcaption>
+        </figure>
+        <figure class="scene">
+          <img src="assets/plus-rain.webp" alt="A moon veiled behind cloud over a forest." width="760" height="570" loading="lazy">
+          <figcaption class="label">
+            <h3>Rain</h3>
+            <p>Surface taps that drift, never settling into a pattern.</p>
+          </figcaption>
+        </figure>
+        <figure class="scene">
+          <img src="assets/plus-fire.webp" alt="A campfire burning low under a starfield." width="760" height="570" loading="lazy">
+          <figcaption class="label">
+            <h3>Fire</h3>
+            <p>A dark flame bed with sparse, distinct crackles.</p>
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="plus-more">
+        <div class="mini">
+          <h3>Brown &amp; pink noise</h3>
+          <p>The deeper, softer noise colours — warmer than white, and levelled to match every other bed.</p>
+        </div>
+        <div class="mini">
+          <h3>A pure tone</h3>
+          <p>A steady tone under the sound bed, or playing on its own. Seven pitches, each named for how it sounds rather than what it is.</p>
+          <span class="hz">130 deep · 174 soft · 285 warm · 396 round</span>
+          <span class="hz">417 gentle · 432 mellow · 528 clear</span>
+        </div>
+        <div class="mini">
+          <h3>Binaural option</h3>
+          <p>A small offset between the two ears, riding on the tone. We make no claims for it — it's there if you like how it sounds. Headphones needed.</p>
+          <span class="hz">Drift 2 Hz · Calm 4 Hz · Float 6 Hz</span>
+        </div>
+      </div>
+
+      <div class="compare">
+        <div class="compare-scroll">
+          <table>
+            <caption>What's free, and what Plus adds</caption>
+            <thead>
+              <tr><th scope="col">&nbsp;</th><th scope="col">Free</th><th scope="col">Plus</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Wind-down sounds</th>
+                <td class="yes">White noise, wind</td>
+                <td class="yes">+ ocean, rain, fire, brown, pink</td>
+              </tr>
+              <tr>
+                <th scope="row">Night scenes</th>
+                <td class="yes">Yes</td>
+                <td class="yes">+ a scene of its own for ocean, rain and fire</td>
+              </tr>
+              <tr>
+                <th scope="row">A pure tone, at a pitch you choose</th>
+                <td><span class="dash">—</span></td>
+                <td class="yes"><span class="tick">✓</span>
+                  <span class="freq">130 · 174 · 285 · 396 · 417 · 432 · 528 Hz</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Binaural option <span class="note">(headphones)</span></th>
+                <td><span class="dash">—</span></td>
+                <td class="yes"><span class="tick">✓</span>
+                  <span class="freq">2, 4 or 6 Hz between the ears</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Breathing guide, fade in and out, dim &amp; settle</th>
+                <td><span class="tick">✓</span></td>
+                <td><span class="tick">✓</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Every alarm feature, and the whole radio</th>
+                <td><span class="tick">✓</span></td>
+                <td><span class="tick">✓</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="price">
+          <b>One payment, once.</b>
+          <span>Never a subscription, and the alarm is never behind it.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band wrap">
+    <h2>Private by design.</h2>
+    <p class="sub">Not a setting you have to find. It's how the app is built.</p>
+    <div class="grid3">
+      <div class="card">
+        <h3>It stays on your phone</h3>
+        <p>Your alarms, stations and settings never leave the device. Uninstall and they're gone.</p>
+      </div>
+      <div class="card">
+        <h3>Nothing to sign in to</h3>
+        <p>No account, no profile, no ads, no usage tracking, and no advertising ID.</p>
+      </div>
+      <div class="card">
+        <h3>Online only when it must be</h3>
+        <p>estelair connects to find and play radio, and to send an anonymous crash report so bugs get fixed.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="close wrap">
+    <h2>Set two things. Sleep better tonight.</h2>
+    <p class="sub">A softer start in the morning, a quieter finish at night.</p>
+    <p class="cta"><a class="badge" href="#">Coming soon to Google Play</a></p>
+    <p class="cta-note">Android 10 and later. Free to install.</p>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <div class="foot-top">
+    <div>estelair</div>
+    <nav class="foot-links">
+      <a href="privacy.html">Privacy policy</a>
+      <a href="mailto:contact@estelair.com">contact@estelair.com</a>
+    </nav>
+  </div>
+  <p class="disclaimer">
+    The calm sounds, the tone and the breathing guide are for relaxation and winding down.
+    They are not a medical or therapeutic product, and estelair does not diagnose, treat or
+    prevent anything.
+  </p>
+  <p class="copyright">&copy; 2026 estelair. Google Play and the Google Play logo are trademarks of Google LLC.</p>
+</footer>
+
+</body>
+</html>
