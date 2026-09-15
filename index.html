@@ -66,8 +66,14 @@ section+section{border-top:1px solid var(--border)}
    whatever sits at the image's midpoint stays at the viewport's midpoint. */
 .hero-bg{position:absolute;left:0;right:0;top:0;height:560px;
   background:url(assets/hero.webp) 50% 0/cover no-repeat;opacity:.55}
+/* Flat across the moon, then darkening. The scrim used to ramp from .38 to .80 over the
+   whole band, which crushed the disc's lower half while leaving its top bright -- so the
+   moon read as sitting well above the wordmark even though it is geometrically centred on
+   it. The disc spans roughly 15-205px of the band, so the scrim is held constant to 38%
+   and only steepens below that. */
 .hero-bg::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(11,10,9,.38) 0%,rgba(11,10,9,.80) 62%,var(--bg) 100%)}
+  background:linear-gradient(180deg,rgba(11,10,9,.50) 0%,rgba(11,10,9,.50) 38%,
+    rgba(11,10,9,.82) 72%,var(--bg) 100%)}
 /* Past the band's own 1600px width, `cover` flips to scaling by WIDTH and the moon
    starts sinking again (+32px at 1920, +79px at 2560). Pin the drawn height instead,
    so the moon stays put, and fade the image's left/right edges into the page ground so
