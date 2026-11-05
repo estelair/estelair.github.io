@@ -8,7 +8,7 @@
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/icon-192.png">
 <meta property="og:title" content="estelair — radio alarm clock &amp; sleep sounds">
-<meta property="og:description" content="Your whole night, in two steps. Calm sound to fall asleep to, radio you love to wake up to.">
+<meta property="og:description" content="Both ends of your night, in two steps. Calm sound to fall asleep to, radio you love to wake up to.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="assets/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -100,6 +100,23 @@ h1 .soft{color:var(--accent)}
 .badge:hover{text-decoration:none}
 .cta-note{margin:14px 0 0;font-size:13.5px;color:var(--hint)}
 .hero-phone{margin:52px auto -12px;max-width:310px}
+
+/* ---------- the film ---------- */
+.film{text-align:center}
+.film .sub{margin-inline:auto}
+.film h2{text-wrap:balance}
+.film-frame{margin:34px auto 0;max-width:960px;border-radius:18px;overflow:hidden;
+  border:1px solid var(--border);background:#000;box-shadow:0 30px 70px rgba(0,0,0,.55)}
+.film video{display:block;width:100%;height:auto;background:#000}
+/* One film, two cuts: the vertical one for a phone held upright, the 16:9 one everywhere
+   else. Only one is ever displayed, and with preload="none" the hidden one fetches nothing
+   but its small poster. */
+.film .film-tall{display:none}
+@media (max-width:700px) and (orientation:portrait){
+  .film-frame{max-width:390px}
+  .film .film-wide{display:none}
+  .film .film-tall{display:block}
+}
 
 /* ---------- feature rows ---------- */
 .row{display:grid;grid-template-columns:1fr minmax(0,330px);gap:clamp(36px,6vw,80px);align-items:center}
@@ -204,7 +221,10 @@ footer{padding-block:52px 62px;border-top:1px solid var(--border);color:var(--hi
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-inner wrap">
     <img class="logo" src="assets/logo.png" alt="estelair" width="195" height="132">
-    <h1>Your whole night,<br><span class="soft">in two steps.</span></h1>
+    <!-- "Both ends" is the positioning (playstore/POSITIONING.md): sleep apps stop at
+         bedtime, alarm apps start at the alarm, and almost nothing does both. "In two
+         steps" keeps it concrete so the line is a promise rather than an abstraction. -->
+    <h1>Both ends of your night,<br><span class="soft">in two steps.</span></h1>
     <p class="lede">
       Tell estelair when you want to sleep and when you want to wake.
       It drifts you off with calm sound, then wakes you to radio you actually like.
@@ -225,6 +245,28 @@ footer{padding-block:52px 62px;border-top:1px solid var(--border);color:var(--hi
 
 <main>
 
+  <!-- The film: the 2:23 explainer (built in Remotion), encoded for the web.
+       Self-hosted on purpose: a YouTube embed would bring Google's cookies and scripts onto
+       a page whose pitch is that nothing watches you. Nothing downloads until it is played. -->
+  <section class="film wrap" id="film">
+    <p class="eyebrow">The film · 2:23 · sound on</p>
+    <h2>The same night, told twice.</h2>
+    <p class="sub">
+      First without estelair, then with it: when it starts, what you hear, how it ends,
+      and the morning.
+    </p>
+    <div class="film-frame">
+      <video class="film-wide" controls preload="none" playsinline width="1280" height="720"
+             poster="assets/film-wide.webp" aria-label="estelair: the same night, told twice. 2 minutes 23 seconds.">
+        <source src="assets/estelair-film-wide.mp4" type="video/mp4">
+      </video>
+      <video class="film-tall" controls preload="none" playsinline width="720" height="1280"
+             poster="assets/film-tall.webp" aria-label="estelair: the same night, told twice. 2 minutes 23 seconds.">
+        <source src="assets/estelair-film-tall.mp4" type="video/mp4">
+      </video>
+    </div>
+  </section>
+
   <section class="wrap">
     <div class="row">
       <div class="copy">
@@ -237,9 +279,10 @@ footer{padding-block:52px 62px;border-top:1px solid var(--border);color:var(--hi
         <ul class="feat">
           <li>It <b>fades in</b> as you settle, and <b>fades to silence</b> on its own — so it can't wake you later.</li>
           <li>A soft chime as it begins, and an optional <b>wordless breathing guide</b> <span>(Plus)</span>.</li>
-          <li>A <b>nightly reminder</b>, at a time you choose, when it's time to start.</li>
+          <li>A <b>nightly reminder</b>, at a time you choose, when it's time to start. Tap once, or let it <b>begin on its own</b>.</li>
+          <li>You choose <b>how long</b> it plays, from 15 minutes to an hour and a half.</li>
           <li><b>Dim &amp; settle</b> quiets the screen down to just a still night scene.</li>
-          <li><b>Two sounds are free, forever</b> <span>— white noise and a full wind ambience.</span></li>
+          <li><b>Two sounds are free, and not a trial</b> <span>— white noise and a full wind ambience.</span></li>
         </ul>
       </div>
       <div class="art">
@@ -332,8 +375,8 @@ footer{padding-block:52px 62px;border-top:1px solid var(--border);color:var(--hi
         <h2>The rest of the sound engine.</h2>
         <p class="sub">
           One payment, once — never a subscription. Plus opens five more sounds,
-          three more night scenes, a tone you can set to your own pitch, and the
-          breathing guide.
+          three more night scenes, a tone you can set to your own pitch with a
+          binaural option, and the breathing guide.
         </p>
       </div>
 
@@ -415,7 +458,7 @@ footer{padding-block:52px 62px;border-top:1px solid var(--border);color:var(--hi
                 <td><span class="tick">✓</span></td>
               </tr>
               <tr>
-                <th scope="row">Fade in and out, dim &amp; settle, the nightly reminder</th>
+                <th scope="row">The nightly reminder, starting on its own, length, fade in and out, dim &amp; settle</th>
                 <td><span class="tick">✓</span></td>
                 <td><span class="tick">✓</span></td>
               </tr>
@@ -455,7 +498,7 @@ footer{padding-block:52px 62px;border-top:1px solid var(--border);color:var(--hi
   </section>
 
   <section class="close wrap">
-    <h2>Set two things. Sleep better tonight.</h2>
+    <h2>Both ends of your night, chosen.</h2>
     <p class="sub">A softer start in the morning, a quieter finish at night.</p>
     <p class="cta"><a class="badge" href="#">Coming soon to Google Play</a></p>
     <p class="cta-note">Android 10 and later. Free to install.</p>
