@@ -88,9 +88,18 @@ section+section{border-top:1px solid var(--border)}
 h1{font-size:clamp(35px,6.4vw,62px);line-height:1.08;letter-spacing:-.028em;font-weight:700;margin:0 0 20px}
 h1 .soft{color:var(--accent)}
 .lede{max-width:610px;margin:0 auto;color:var(--muted);font-size:clamp(17px,2.2vw,21px);line-height:1.55}
-.pills{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin:30px 0 0;padding:0;list-style:none}
-.pills li{font-size:13.5px;color:var(--muted);background:rgba(255,255,255,.045);
-  border:1px solid var(--border);border-radius:999px;padding:6px 14px;white-space:nowrap}
+/* These four lines are the single strongest thing the app has to say, and they used to be
+   the quietest type on the page: 13.5px, --muted grey, on a 4.5%-white wash. Lifted to
+   15px/550 in full --text, with the "No" picked out in the accent so the row reads as a
+   rhythm -- No ads, No tracking -- rather than as four metadata tags.
+   Deliberately NOT amber-filled pills: the CTA badge below is muted grey by design (it
+   stands in for Google's official badge, which may not be restyled), so four accent-filled
+   chips directly above it would out-shout the actual call to action. Accenting one word
+   each keeps the lift and leaves the hierarchy intact. */
+.pills{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:30px 0 0;padding:0;list-style:none}
+.pills li{font-size:15px;font-weight:550;color:var(--text);background:rgba(255,255,255,.055);
+  border:1px solid var(--border);border-radius:999px;padding:8px 16px;white-space:nowrap}
+.pills li span{color:var(--accent);font-weight:700}
 .cta{margin:34px 0 0}
 /* Placeholder until the app is live. To swap in the real badge, download the official
    "Get it on Google Play" asset from Google Play's brand guidelines and drop it in as an
@@ -230,8 +239,10 @@ footer{padding-block:52px 62px;border-top:1px solid var(--border);color:var(--hi
       It drifts you off with calm sound, then wakes you to radio you actually like.
     </p>
     <ul class="pills">
-      <li>No ads</li><li>No tracking</li><li>No accounts</li>
-      <li>No subscription</li><li>Nothing to sign up for</li>
+      <li><span>No</span> ads</li>
+      <li><span>No</span> tracking</li>
+      <li><span>No</span> accounts</li>
+      <li><span>No</span> subscription</li>
     </ul>
     <p class="cta">
       <a class="badge" href="https://play.google.com/store/apps/details?id=com.estelair.app">Get it on Google Play</a>
