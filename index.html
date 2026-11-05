@@ -104,9 +104,24 @@ h1 .soft{color:var(--accent)}
 /* Placeholder until the app is live. To swap in the real badge, download the official
    "Get it on Google Play" asset from Google Play's brand guidelines and drop it in as an
    <img> inside this link - never redraw or restyle Google's badge yourself. */
-.badge{display:inline-flex;align-items:center;gap:11px;background:var(--surface-2);color:var(--muted);
-  border:1px solid var(--border);font-weight:650;font-size:16px;padding:14px 26px;border-radius:12px}
+/* Google's own badge, used unmodified, as their guidelines require: "Don't change the badge
+   color", "Don't remove or rearrange badge elements, or otherwise adjust the badge in any
+   way", "Don't alter the scale of the wordmark or icon."
+   SIZING. The rule is on height: "The badge height must be a minimum of 28px." At a 72px
+   canvas the visible badge is 48px tall, comfortably clear of that, and the 646x250 source
+   is then displayed at ~3.5x so it can never be the "low-resolution badge with illegible
+   text" they warn about.
+   CLEAR SPACE. "To determine the minimum amount of clear space, use one-quarter of the
+   height of the badge." Google has very nearly baked this into the asset: the PNG carries
+   41px of transparent padding on all four sides around a 168px-tall badge, which is 24.4%
+   -- a pixel short of the quarter. So size the CANVAS rather than the artwork and the rule
+   is all but met by the file itself; the 34px above and 14px below close the gap several
+   times over. Do not crop the padding off thinking it is empty space.
+   The background is --bg, a solid dark colour: "Use only solid backgrounds or simple
+   background images that create enough contrast with the badge." */
+.badge{display:inline-block}
 .badge:hover{text-decoration:none}
+.badge img{height:72px;width:auto}
 .cta-note{margin:14px 0 0;font-size:13.5px;color:var(--hint)}
 .hero-phone{margin:52px auto 0;max-width:310px}
 
@@ -245,7 +260,8 @@ footer{padding-block:52px 62px;border-top:1px solid var(--border);color:var(--hi
       <li><span>No</span> subscription</li>
     </ul>
     <p class="cta">
-      <a class="badge" href="https://play.google.com/store/apps/details?id=com.estelair.app">Get it on Google Play</a>
+      <a class="badge" href="https://play.google.com/store/apps/details?id=com.estelair.app"><img
+        src="assets/play-badge.png" alt="Get it on Google Play" width="646" height="250"></a>
     </p>
     <p class="cta-note">Android 10 and later.</p>
     <div class="phone hero-phone">
@@ -511,7 +527,8 @@ footer{padding-block:52px 62px;border-top:1px solid var(--border);color:var(--hi
   <section class="close wrap">
     <h2>Both ends of your night, chosen.</h2>
     <p class="sub">A softer start in the morning, a quieter finish at night.</p>
-    <p class="cta"><a class="badge" href="https://play.google.com/store/apps/details?id=com.estelair.app">Get it on Google Play</a></p>
+    <p class="cta"><a class="badge" href="https://play.google.com/store/apps/details?id=com.estelair.app"><img
+      src="assets/play-badge.png" alt="Get it on Google Play" width="646" height="250"></a></p>
     <p class="cta-note">Android 10 and later. Free to install.</p>
   </section>
 
